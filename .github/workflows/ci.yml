@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - run: uv sync
+      - run: uv run ruff check --output-format=github src/ tests/
+      - run: uv run ruff format --check src/ tests/
+      - run: uv run ty check || true  # informative only
+
+  test:
+    strategy:
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    name: test (py${{ matrix.python-version }} on ${{ matrix.os }})
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: astral-sh/setup-uv@v3
+      - run: uv sync
+      - run: uv run pytest --verbose --color=yes
+      - run: uv run coverage run -m pytest && uv run coverage report --fail-under=65
+    matrix:
+      os: [ubuntu-latest, macos-latest, windows-latest]
+      python-version: ["3.10", "3.11", "3.12", "3.13"]
+
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - run: uvx pre-commit install-hooks
+      - run: uvx pre-commit run --all-files
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [lint, test, pre-commit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - run: uv build
+      - run: uvx twine check dist/*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/*
+
+  install-test:
+    runs-on: ${{ matrix.os }}
+    needs: [build]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: astral-sh/setup-uv@v3
+      - run: uv pip install dist/*.whl || uv pip install dist/*.tar.gz
+      - run: python - << 'PY'
+import importlib; importlib.import_module('mcp_clearml'); print('import ok')
+PY
+      - run: python - << 'PY'
+import subprocess; subprocess.run(['mcp-clearml', '--help'], check=False)
+PY
+    matrix:
+      os: [ubuntu-latest, macos-latest, windows-latest]
+      python-version: ["3.10", "3.11", "3.12", "3.13"]
