@@ -6,9 +6,9 @@ and response schemas are preserved to maintain compatibility with existing
 clients and tests.
 """
 
-from typing import Any, TypedDict
+from typing import Any
 
-from clearml import Model, Task, task
+from clearml import Model, Task
 from .services.datasets import (
     get_datasets_full_info as svc_datasets_full_info,
     find_datasets_by_project as svc_find_datasets_by_project,

@@ -14,10 +14,10 @@ classifiers = [
 ]
 license = {text = "MIT"}
 dependencies = [
-  "typer",
-  "mcp"
+  "clearml~=1.18.0",
+  "fastmcp~=0.4.0"
 ]
-requires-python = ">= 3.10"
+requires-python = ">= 3.12"
 
 [project.optional-dependencies]
 test = [
@@ -34,7 +34,7 @@ changelog = "https://github.com/r.godun/mcp_clearml/blob/master/changelog.md"
 homepage = "https://github.com/r.godun/mcp_clearml"
 
 [project.scripts]
-mcp-clearml = "mcp_clearml.cli:app"
+mcp-clearml = "mcp_clearml.mcp:main"
 
 [tool.ty]
 # All rules are enabled as "error" by default; no need to specify unless overriding.
