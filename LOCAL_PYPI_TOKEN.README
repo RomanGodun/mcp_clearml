@@ -1,0 +1,23 @@
+This repo uses CI for releases. For local twine upload, do one of the following (do NOT commit secrets):
+
+1) ~/.pypirc (recommended)
+
+[distutils]
+index-servers =
+    pypi
+
+[pypi]
+username = __token__
+password = pypi-<your-token>
+
+2) Shell env variables (only for current session):
+
+export TWINE_USERNAME=__token__
+export TWINE_PASSWORD=pypi-<your-token>
+
+3) .env (ignored by git) and then `source .env` before upload:
+
+TWINE_USERNAME=__token__
+TWINE_PASSWORD=pypi-<your-token>
+
+For CI publishing, add PYPI_API_TOKEN as a GitHub Actions secret in the repository settings.

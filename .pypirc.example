@@ -1,0 +1,12 @@
+# Example PyPI config file for twine (do NOT commit your real token).
+# Copy this file to ~/.pypirc (in your home directory) and paste your token there.
+# This format is recognized by twine/pip for repository credentials.
+
+[distutils]
+index-servers =
+    pypi
+
+[pypi]
+username = __token__
+# Replace with your actual token from PyPI (starts with "pypi-")
+password = pypi-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
