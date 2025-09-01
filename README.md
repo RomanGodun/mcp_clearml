@@ -1,7 +1,6 @@
-# mcp_clearml
 
 <p align="center">
-  <img src="docs/photo_2025-09-01_14-40-55.jpg" alt="mcp_clearml cover" width="720" />
+  <img src="docs/photo_2025-09-01_14-40-55.jpg" alt="mcp_clearml cover" width="550" />
 </p>
 
 ![PyPI version](https://img.shields.io/pypi/v/mcp_clearml.svg)
