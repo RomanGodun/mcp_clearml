@@ -1,38 +1,41 @@
 # Installation
 
-## Stable release
+## Prerequisites
 
-To install mcp_clearml, run this command in your terminal:
+- Python >= 3.12
+- ClearML credentials in `~/.clearml/clearml.conf`:
 
-```sh
-uv add mcp_clearml
+```ini
+[api]
+api_server = https://api.clear.ml
+web_server = https://app.clear.ml
+files_server = https://files.clear.ml
+
+credentials {
+    "access_key": "your-access-key",
+    "secret_key": "your-secret-key"
+}
 ```
 
-Or if you prefer to use `pip`:
+## Install from PyPI
 
 ```sh
 pip install mcp_clearml
 ```
 
+## Run without installing (uvx)
+
+```sh
+uvx mcp-clearml
+```
+
 ## From source
 
-The source files for mcp_clearml can be downloaded from the [Github repo](https://github.com/RomanGodun/mcp_clearml).
-
-You can either clone the public repository:
+Get the code from the [GitHub repo](https://github.com/RomanGodun/mcp_clearml):
 
 ```sh
-git clone git://github.com/RomanGodun/mcp_clearml
-```
-
-Or download the [tarball](https://github.com/RomanGodun/mcp_clearml/tarball/master):
-
-```sh
-curl -OJL https://github.com/RomanGodun/mcp_clearml/tarball/master
-```
-
-Once you have a copy of the source, you can install it with:
-
-```sh
+git clone https://github.com/RomanGodun/mcp_clearml
 cd mcp_clearml
-uv pip install .
+uv sync
+uv run mcp-clearml
 ```
